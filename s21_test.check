@@ -1,0 +1,569 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "s21_string.h"
+
+
+
+
+#test memcmp_1
+char s1[] = "hello world";
+char s2[] = "hello world";
+ck_assert_int_eq(memcmp(s1,s2, 9),s21_memcmp(s1,s2, 9));
+
+#test memcmp_2
+char str1[] = "HELLO555";
+char str2[] = "HELLO";
+ck_assert_int_eq(memcmp(str1,str2, 9), s21_memcmp(str1,str2, 9));
+
+#test memcmp_3
+char str1[] = "HELLO";
+char str2[] = "";
+ck_assert_int_eq(memcmp(str1,str2, 9), s21_memcmp(str1,str2, 9));
+
+#test memcmp_4
+char str1[] = "";
+char str2[] = "";
+ck_assert_int_eq(memcmp(str1,str2, 9), s21_memcmp(str1,str2, 9));
+
+#test memcmp_5
+char str1[] = "*^$%^&)*";
+char str2[] = "^%$^R(&*";
+ck_assert_int_eq(memcmp(str1,str2, 0), s21_memcmp(str1,str2, 0));
+
+#test memcmp_6
+char str1[] = "%^&*";
+char str2[] = "^&*(";
+ck_assert_int_eq(memcmp(str1,str2, -3), s21_memcmp(str1,str2, -3));
+
+
+
+
+
+
+
+#test memcpy_1
+char str1[10] = "1234";
+char str2[10] = "";
+ck_assert_ptr_eq(memcpy(str2, str1, 2), s21_memcpy(str2, str1, 2));
+
+#test memcpy_2
+char str1[10] = "a";
+char str2[10] = "1234456";
+ck_assert_ptr_eq(memcpy(str2, str1, 10), s21_memcpy(str2, str1, 10));
+
+#test memcpy_3
+char str1[] = "";
+char str2[10] = "1234456\0\n\t";
+ck_assert_ptr_eq(memcpy(str2, str1, 1), s21_memcpy(str2, str1, 1));
+
+#test memcpy_4
+char str1[10] = "";
+char str2[10] = "1234456";
+ck_assert_ptr_eq(memcpy(str2, str1, 3), s21_memcpy(str2, str1, 3));
+
+#test memcpy_5
+char str1[] = "";
+char str2[] = "";
+ck_assert_ptr_eq(memcpy(str2, str1, 1), s21_memcpy(str2, str1, 1));
+
+#test memcpy_6
+char str1[] = "";
+char str2[] = "";
+ck_assert_ptr_eq(memcpy(str2, str1, 0), s21_memcpy(str2, str1, 0));
+
+
+
+
+
+
+#test memmove_1
+char str1[10] = "12345";
+char str2[10] = "123";
+ck_assert_ptr_eq(memmove(&str2[2], &str1[3], 3), s21_memmove(&str2[2], &str1[3], 3));
+
+#test memmove_2
+char str1[10] = "123767";
+ck_assert_ptr_eq(memmove(&str1[2], &str1[3], 3), s21_memmove(&str1[2], &str1[3], 3));
+
+#test memmove_3
+char str1[10] = "";
+char str2[10] = "";
+ck_assert_ptr_eq(memmove(str1, str2, 3), s21_memmove(str1, str2, 3));
+
+#test memmove_4
+char str1[10] = "\0\t\n\a";
+char str2[10] = "";
+ck_assert_ptr_eq(memmove(str2, str1, 3), s21_memmove(str2, str1, 3));
+
+#test memmove_5
+char str1[] = "\0\t\n\a";
+char str2[] = "";
+ck_assert_ptr_eq(memmove(str2, str1, 0), s21_memmove(str2, str1, 0));
+
+
+
+
+#test memset_1
+char str1[] = "qqqqqq";
+ck_assert_ptr_eq(memset(str1, '1', 4), s21_memset(str1, '1', 4));
+
+#test memset_2
+char str1[10] = "";
+ck_assert_ptr_eq(memset(str1, '1', 3), s21_memset(str1, '1', 3));
+
+#test memset_3
+char str1[10] = "qqqqqqq";
+ck_assert_ptr_eq(memset(str1, '\0', 10), s21_memset(str1, '\0', 10));
+
+#test memset_4
+char str1[10] = "\0\0\0\0\0";
+ck_assert_ptr_eq(memset(str1, '\n', 10), s21_memset(str1, '\n', 10));
+
+#test memset_5
+char str1[10] = "\0\0\0\0\0";
+ck_assert_ptr_eq(memset(str1, '\n', 0), s21_memset(str1, '\n', 0));
+
+
+
+#test strcpy_1
+char str1[10] = "123456789";
+char str2[10] = "";
+ck_assert_ptr_eq(strcpy(str2, str1), s21_strcpy(str2, str1));
+
+#test strcpy_2
+char str1[10] = "123456789";
+char str2[10] = "1231231231";
+ck_assert_ptr_eq(strcpy(str2, str1), s21_strcpy(str2, str1));
+
+#test strcpy_3
+char str1[10] = "";
+char str2[10] = "";
+ck_assert_ptr_eq(strcpy(str2, str1), s21_strcpy(str2, str1));
+
+#test strcpy_4
+char str1[] = "\0\t\n\a";
+char str2[] = "";
+ck_assert_ptr_eq(strcpy(str2, str1), s21_strcpy(str2, str1));
+
+#test strcpy_5
+char str1[] = "";
+char str2[] = "                    ";
+ck_assert_ptr_eq(strcpy(str2, str1), s21_strcpy(str2, str1));
+
+
+
+
+
+#test strncpy_1
+char str1[10] = "123456789";
+char str2[10] = "";
+ck_assert_ptr_eq(strncpy(str2, str1, 10), s21_strncpy(str2, str1, 10));
+
+#test strncpy_2
+char str1[10] = "1234";
+char str2[10] = "";
+ck_assert_ptr_eq(strncpy(str2, str1, 0), s21_strncpy(str2, str1, 0));
+
+#test strncpy_3
+char str1[10] = "\0\t\n";
+char str2[10] = "";
+ck_assert_ptr_eq(strncpy(str2, str1, 3), s21_strncpy(str2, str1, 3));
+
+#test strncpy_4
+char str1[10] = "";
+char str2[10] = "";
+ck_assert_ptr_eq(strncpy(str2, str1, 3), s21_strncpy(str2, str1, 3));
+
+#test strncpy_5
+char str1[10] = "2132313";
+char str2[10] = "1111";
+ck_assert_ptr_eq(strncpy(str2, str1, 3), s21_strncpy(str2, str1, 3));
+
+
+
+#test memchr_1
+char str1[10] = "2132313";
+int a = 49;
+ck_assert_ptr_eq(memchr(str1, a, 5), s21_memchr(str1, a, 5));
+
+#test memchr_2
+char str1[10] = "";
+int a = '\0';
+ck_assert_ptr_eq(memchr(str1, a, 10), s21_memchr(str1, a, 10));
+
+#test memchr_3
+char str1[10] = "112323";
+int a = 127;
+ck_assert_ptr_eq(memchr(str1, a, 4), s21_memchr(str1, a, 4));
+
+#test memchr_4
+char str1[10] = "";
+int a = 84924932;
+ck_assert_ptr_eq(memchr(str1, a, 14), s21_memchr(str1, a, 14));
+
+#test memchr_5
+char str1[] = "";
+int a = 1000000000;
+ck_assert_ptr_eq(memchr(str1, a, 1), s21_memchr(str1, a, 1));
+
+
+
+
+#test strcmp_1
+ck_assert_int_eq(strcmp("qwerty", "qwerty"), s21_strcmp("qwerty", "qwerty"));
+
+#test strcmp_2
+char *str1 = "equal";
+char *str2 = "equaly";
+ck_assert_int_eq(strcmp(str1, str2), s21_strcmp(str1, str2));
+
+#test strcmp_3
+char *str1 = "equal";
+char *str3 = "qwert";
+ck_assert_int_eq(strcmp(str1, str3), s21_strcmp(str1, str3));
+
+#test strcmp_4
+char *str1 = "equal";
+ck_assert_int_eq(strcmp(str1, "equal"), s21_strcmp(str1, "equal"));
+
+#test strcmp_5
+char *str1 = "123@##%@";
+char *str2 = "123@@$??";
+ck_assert_int_eq(strcmp(str1, str2), s21_strcmp(str1, str2));
+
+#test strcnmp_1
+ck_assert_int_eq(strncmp("qwerty", "qwerty", 6), s21_strncmp("qwerty", "qwerty", 6));
+
+#test strncmp_2
+char *str1 = "equal";
+char *str2 = "equaly";
+ck_assert_int_eq(strncmp(str1, str2, 5), s21_strncmp(str1, str2, 5));
+
+#test strncmp_3
+char *str1 = "equal";
+char *str3 = "qwert";
+ck_assert_int_eq(strncmp(str1, str3, 1), s21_strncmp(str1, str3, 1));
+
+#test strncmp_4
+char *str1 = "equal";
+ck_assert_int_eq(strncmp(str1, "equal", 2), s21_strncmp(str1, "equal", 2));
+
+#test strncmp_5
+char *str1 = "123@##%@";
+char *str2 = "123@@$??";
+ck_assert_int_eq(strncmp(str1, str2, 10), s21_strncmp(str1, str2, 10));
+
+#test strlen_1
+ck_assert_int_eq(strlen("qwerty"), s21_strlen("qwerty"));
+
+#test strlen_2
+char *str1 = "equal";
+ck_assert_int_eq(strlen(str1), s21_strlen(str1));
+
+#test strlen_3
+char *str1 = "e";
+ck_assert_int_eq(strlen(str1), s21_strlen(str1));
+
+#test strlen_4
+char *str1 = " ";
+ck_assert_int_eq(strlen(str1), s21_strlen(str1));
+
+#test strlen_5
+char *str1 = "";
+ck_assert_int_eq(strlen(str1), s21_strlen(str1));
+
+#test strspn_1
+ck_assert_int_eq(strspn("qwerty", "qwerty"), s21_strspn("qwerty", "qwerty"));
+
+#test strspn_2
+char *str1 = "equal";
+char *str2 = "e";
+ck_assert_int_eq(strspn(str1, str2), s21_strspn(str1, str2));
+
+#test strspn_3
+char *str1 = "equal";
+char *str3 = "wrt";
+ck_assert_int_eq(strspn(str1, str3), s21_strspn(str1, str3));
+
+#test strspn_4
+char *str1 = "equal";
+char *str2 = "";
+ck_assert_int_eq(strspn(str1, str2), s21_strspn(str1, str2));
+
+#test strspn_5
+char *str1 = "123";
+char *str2 = "123@@$??";
+ck_assert_int_eq(strspn(str1, str2), s21_strspn(str1, str2));
+
+#test strcspn_1
+ck_assert_int_eq(strcspn("qwerty", "qwerty"), s21_strcspn("qwerty", "qwerty"));
+
+#test strcspn_2
+char *str1 = "equal";
+char *str2 = "e";
+ck_assert_int_eq(strcspn(str1, str2), s21_strcspn(str1, str2));
+
+#test strcspn_3
+char *str1 = "equal";
+char *str3 = "wrt";
+ck_assert_int_eq(strcspn(str1, str3), s21_strcspn(str1, str3));
+
+#test strcspn_4
+char *str1 = "equal";
+char *str2 = "";
+ck_assert_int_eq(strcspn(str1, str2), s21_strcspn(str1, str2));
+
+#test strcspn_5
+char *str1 = "123";
+char *str2 = "123@@$??";
+ck_assert_int_eq(strcspn(str1, str2), s21_strcspn(str1, str2));
+
+#test strstr_1
+ck_assert_pstr_eq(strstr("qwerty", "qwe"), s21_strstr("qwerty", "qwe"));
+
+#test strstr_2
+char *str1 = "equal";
+char *str2 = "qual";
+ck_assert_pstr_eq(strstr(str1, str2), s21_strstr(str1, str2));
+
+#test strstr_3
+char *str1 = "equal";
+char *str3 = "quf";
+ck_assert_pstr_eq(strstr(str1, str3), s21_strstr(str1, str3));
+
+#test strstr_4
+char *str1 = "equal";
+char *str2 = "";
+ck_assert_pstr_eq(strstr(str1, str2), s21_strstr(str1, str2));
+
+#test strstr_5
+char *str1 = "123";
+char *str2 = "123qwerty123q";
+ck_assert_pstr_eq(strstr(str1, str2), s21_strstr(str1, str2));
+
+#test strrchr_1
+ck_assert_pstr_eq(strrchr("qwerty", 'q'), s21_strrchr("qwerty", 'q'));
+
+#test strrchr_2
+char *str1 = "equal";
+char str2 = 'q';
+ck_assert_pstr_eq(strrchr(str1, str2), s21_strrchr(str1, str2));
+
+#test strrchr_3
+char *str1 = "equal";
+char str2 = 'y';
+ck_assert_pstr_eq(strrchr(str1, str2), s21_strrchr(str1, str2));
+
+#test strrchr_4
+char *str1 = "equal";
+char str2 = ' ';
+ck_assert_pstr_eq(strrchr(str1, str2), s21_strrchr(str1, str2));
+
+#test strrchr_5
+char *str1 = "qwe";
+char str2 = '\0';
+ck_assert_pstr_eq(strrchr(str1, str2), s21_strrchr(str1, str2));
+
+#test strpbrk_1
+ck_assert_pstr_eq(strpbrk("qwerty", "equ"), s21_strpbrk("qwerty", "equ"));
+
+#test strpbrk_2
+char *str1 = "equal";
+char *str2 = "qq";
+ck_assert_pstr_eq(strpbrk(str1, str2), s21_strpbrk(str1, str2));
+
+#test strpbrk_3
+char *str1 = "equal";
+char *str2 = "yhht";
+ck_assert_pstr_eq(strpbrk(str1, str2), s21_strpbrk(str1, str2));
+
+#test strpbrk_4
+char *str1 = "equal";
+char *str2 = "m";
+ck_assert_pstr_eq(strpbrk(str1, str2), s21_strpbrk(str1, str2));
+
+#test strpbrk_5
+char *str1 = "qwe";
+char *str2 = "\0";
+ck_assert_pstr_eq(strpbrk(str1, str2), s21_strpbrk(str1, str2));
+
+#test strchr_1
+ck_assert_ptr_eq(strchr("qwerty", 'q'), s21_strchr("qwerty", 'q'));
+
+#test strchr_2
+char *str1 = "equal";
+char str2 = 'e';
+ck_assert_ptr_eq(strchr(str1, str2), s21_strchr(str1, str2));
+
+#test strchr_3
+char *str1 = "equal";
+char str2 = 'f';
+ck_assert_ptr_eq(strchr(str1, str2), s21_strchr(str1, str2));
+
+#test strchr_4
+char *str1 = "equal";
+char str2 = ' ';
+ck_assert_ptr_eq(strchr(str1, str2), s21_strchr(str1, str2));
+
+#test strchr_5
+char *str1 = "qwe";
+char str2 = '\0';
+ck_assert_ptr_eq(strchr(str1, str2), s21_strchr(str1, str2));
+
+
+
+#test s21_strcat_normal
+char str_1[20] = "hello";
+char str_2[20] = "hello";
+char *src = "world";
+char *s21_result = s21_strcat(str_1, src);
+char *lib_result = strcat(str_2, src);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strcat_first_str_empty
+char str_1[20];
+str_1[0] = '\0';
+char str_2[20];
+str_2[0] = '\0';
+char *src = "world";
+char *s21_result = s21_strcat(str_1, src);
+char *lib_result = strcat(str_2, src);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strcat_second_str_empty
+char str_1[20] = "hello";
+char str_2[20] = "hello";
+char *src = "";
+char* s21_result = s21_strcat(str_1, src);
+char* lib_result = strcat(str_2, src);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strcat_both_str_empty
+char str_1[20] = "";
+char str_2[20] = "";
+char *src = "";
+char* s21_result = s21_strcat(str_1, src);
+char* lib_result = strcat(str_2, src);
+ck_assert_str_eq(s21_result, lib_result);
+
+
+#test s21_strncat_normal
+char str_1[20] = "hello";
+char str_2[20] = "hello";
+char *src = "world";
+s21_size_t n = 3;
+char *s21_result = s21_strncat(str_1, src, n);
+char *lib_result = strncat(str_2, src, n);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strncat_first_str_empty
+char str_1[20];
+str_1[0] = '\0';
+char str_2[20];
+str_2[0] = '\0';
+char *src = "world";
+s21_size_t n = 3;
+char *s21_result = s21_strncat(str_1, src, n);
+char *lib_result = strncat(str_2, src, n);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strncat_second_str_empty
+char str_1[20] = "hello";
+char str_2[20] = "hello";
+char *src = "";
+s21_size_t n = 3;
+char* s21_result = s21_strncat(str_1, src, n);
+char* lib_result = strncat(str_2, src, n);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strncat_both_str_empty
+char str_1[20] = "";
+char str_2[20] = "";
+char *src = "";
+s21_size_t n = 3;
+char* s21_result = s21_strncat(str_1, src, n);
+char* lib_result = strncat(str_2, src, n);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strncat_size_empty
+char str_1[20] = "hello";
+char str_2[20] = "hello";
+char *src = "world";
+s21_size_t n = 0;
+char* s21_result = s21_strncat(str_1, src, n);
+char* lib_result = strncat(str_2, src, n);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strncat_all_empty
+char str_1[20] = "";
+char str_2[20] = "";
+char *src = "";
+s21_size_t n = 0;
+char* s21_result = s21_strncat(str_1, src, n);
+char* lib_result = strncat(str_2, src, n);
+ck_assert_str_eq(s21_result, lib_result);
+
+#test s21_strtok_normal
+char s21_test_str[30] = "one/two.three?four";
+char lib_test_str[30] = "one/two.three?four";
+char* step = "./?";
+char* s21_result = s21_strtok(s21_test_str, step);
+char* lib_result = strtok(lib_test_str, step);
+while (s21_result != s21_NULL && lib_result != s21_NULL) {
+    ck_assert_str_eq(s21_result, lib_result);
+    s21_result = s21_strtok(s21_NULL, step);
+    lib_result = strtok(s21_NULL, step);
+}
+ck_assert_ptr_eq(s21_result, lib_result);
+
+#test s21_strtok_no_delimetr
+char s21_test_str[30] = "one/two.three?four";
+char lib_test_str[30] = "one/two.three?four";
+char* step = "$()-";
+char* s21_result = s21_strtok(s21_test_str, step);
+char* lib_result = strtok(lib_test_str, step);
+while (s21_result != s21_NULL && lib_result != s21_NULL) {
+    ck_assert_str_eq(s21_result, lib_result);
+    s21_result = s21_strtok(s21_NULL, step);
+    lib_result = strtok(s21_NULL, step);
+}
+ck_assert_ptr_eq(s21_result, lib_result);
+
+#test s21_strtok_empty
+char s21_test_str[30] = "";
+char lib_test_str[30] = "";
+char* step = "$()-";
+char* s21_result = s21_strtok(s21_test_str, step);
+char* lib_result = strtok(lib_test_str, step);
+ck_assert_ptr_eq(s21_result, lib_result);
+
+#test s21_strerror_positive_0
+char* s21_test_str = s21_strerror(0);
+char* lib_test_str = strerror(0);
+ck_assert_str_eq(s21_test_str, lib_test_str);
+
+#test s21_strerror_positive_106
+char* s21_test_str = s21_strerror(106);
+char* lib_test_str = strerror(106);
+ck_assert_str_eq(s21_test_str, lib_test_str);
+
+#test s21_strerror_negative_minus1
+char* s21_test_str = s21_strerror(-1);
+char* lib_test_str = strerror(-1);
+ck_assert_str_eq(s21_test_str, lib_test_str);
+
+#test s21_strerror_negative_107
+char* s21_test_str = s21_strerror(107);
+char* lib_test_str = strerror(107);
+ck_assert_str_eq(s21_test_str, lib_test_str);
+
+#test s21_strerror_negative_minus1000
+char* s21_test_str = s21_strerror(-1000);
+char* lib_test_str = strerror(-1000);
+ck_assert_str_eq(s21_test_str, lib_test_str);
+
+#test s21_strerror_negative_1000
+char* s21_test_str = s21_strerror(1000);
+char* lib_test_str = strerror(1000);
+ck_assert_str_eq(s21_test_str, lib_test_str);
+

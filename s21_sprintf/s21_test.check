@@ -1,0 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "s21_sprintf.h"
+
+#test s21_sprintf_d
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+    int min = -2147483648;
+    int max = 2147483647;
+
+    int lib_res = sprintf(lib_test_str,
+        "|%d| |%d| |% d| |%+d| |%d| |%-5d| |%20.15d| |%+.0d| |%5.15d|\n",
+        12, 0, 12, max, min, 12, 12, 12, -12);
+    int s21_res = s21_sprintf(s21_test_str,
+        "|%d| |%d| |% d| |%+d| |%d| |%-5d| |%20.15d| |%+.0d| |%5.15d|\n",
+        12, 0, 12, max, min, 12, 12, 12, -12);
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_i
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+
+    int lib_res = sprintf(lib_test_str,
+        "|%i| |% i| |%+i| |%i| |%-5i| \n",
+        12, 12, 12, -12, 12);
+    int s21_res = s21_sprintf(s21_test_str,
+        "|%i| |% i| |%+i| |%i| |%-5i| \n",
+        12, 12, 12, -12, 12);
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_u
+ char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+    unsigned int u = 2147483647;
+    unsigned int a = 0;
+    unsigned int b = 102;
+    unsigned int c = 12;
+    unsigned int d = 120;
+    unsigned int e = 1200;
+    unsigned int f = 14895085;
+    int lib_res = sprintf(lib_test_str,
+        "|%u| |%u| |%u| |%-20u| |%u|  |%.20u| |%-20.15u| |%u|\n", u,
+        a, b, c, f, c, d, e);
+    int s21_res = s21_sprintf(s21_test_str,
+        "|%u| |%u| |%u| |%-20u| |%u|  |%.20u| |%-20.15u| |%u|\n", u,
+        a, b, c, f, c, d, e);
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_s
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+
+    int lib_res = sprintf(lib_test_str, "|%20s| |%-20s| |%5.0s| |%.1s|\n", "Hi", "My", "Hi", "My");
+    int s21_res = s21_sprintf(s21_test_str, "|%20s| |%-20s| |%5.0s| |%.1s|\n", "Hi", "My", "Hi", "My");
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_h
+ char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+
+    unsigned short i = 0;
+    short e = 0;
+    short f = 32767;
+    int lib_res = sprintf(lib_test_str, "|%hi| |%hd| |%hu|", e, f, i);
+    int s21_res = s21_sprintf(s21_test_str, "|%hi| |%hd| |%hu|", e, f, i);
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_l
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+    long i = 2147483647;
+    long a = -2147483647;
+    unsigned long b = 4294967295;
+    int lib_res = sprintf(lib_test_str, "|%li| |%ld| |%lu|", i, a, b);
+    int s21_res = s21_sprintf(s21_test_str, "|%li| |%ld| |%lu|", i, a, b);
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_diu_whith_str
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+
+    long number = 100000000;
+    unsigned int a = 1;
+        short number1 = 5;
+    int lib_res = sprintf(lib_test_str,
+        "%d Hello, %010u it's a great % hd, %-10i, %+10d, %+10d, %ld\n", 0, a, number1, 3, -4, 5, number);
+    int s21_res = s21_sprintf(s21_test_str,
+        "%d Hello, %010u it's a great % hd, %-10i, %+10d, %+10d, %ld\n", 0, a, number1, 3, -4, 5, number);
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+
+#test s21_sprintf_cs
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+
+    char* str0 = "User";
+    char* str1 = "";
+    int lib_res = sprintf(lib_test_str, "Hello, %-13s, i%c, %s a great day!", str0, 't', str1);
+    int s21_res = s21_sprintf(s21_test_str, "Hello, %-13s, i%c, %s a great day!", str0, 't', str1);
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_empty
+char* s21_test_str = (char*)malloc(sizeof(char) * 512);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 512);
+
+    int lib_res = sprintf(lib_test_str, "%c", '\0');
+    int s21_res = s21_sprintf(s21_test_str, "%c", '\0');
+
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+
+    free(s21_test_str);
+    free(lib_test_str);
+
+#test s21_sprintf_f
+char* s21_test_str = (char*)malloc(sizeof(char) * 256);
+    char* lib_test_str = (char*)malloc(sizeof(char) * 256);
+    int s21_res = s21_sprintf(s21_test_str,
+        "|%f| |% f| |%+f| |%f| |%-8f|\n",
+        0.020, 0.020, 0.020, -0.020, 0.020);
+    int lib_res = sprintf(lib_test_str,
+        "|%f| |% f| |%+f| |%f| |%-8f|\n",
+        0.020, 0.020, 0.020, -0.020, 0.020);
+    ck_assert_str_eq(s21_test_str, lib_test_str);
+    ck_assert_int_eq(s21_res, lib_res);
+    free(s21_test_str);
+    free(lib_test_str);
